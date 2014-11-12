@@ -10,4 +10,4 @@ Packaged extension can be installed from https://raw.githubusercontent.com/emc2c
 # Safari 8.0 (Yosemite) information
 
 Unread message badge can only be refreshed in the background if your cookies and website data preferences are either "Allow from websites I visit" or "Always allow".
-It will not be able to refresh on "Allow from current website only" or "Always block" unless you are logged to theoldreader.com AND have a window or tab displaying it.
+It will not be able to refresh on "Allow from current website only" or "Always block" unless you are logged to theoldreader.com AND have a window or tab currently displaying it.
