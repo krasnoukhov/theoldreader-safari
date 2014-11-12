@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Extension Updates</key>
+    <array>
+      <dict>
+        <key>CFBundleIdentifier</key>
+        <string>com.emc2.theoldreader</string>
+        <key>Developer Identifier</key>
+        <string>7C455S9395</string>
+        <key>CFBundleVersion</key>
+        <string>7</string>
+        <key>CFBundleShortVersionString</key>
+        <string>1.6</string>
+        <key>URL</key>
+        <string>https://raw.githubusercontent.com/emc2cube/theoldreader-safari/master/The%20Old%20Reader.safariextz</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

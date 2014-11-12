@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>The Old Reader</string>
+	<string>The Old Reader - emc2cube</string>
 	<key>Builder Version</key>
-	<string>8536.29.13</string>
+	<string>10600.1.25</string>
 	<key>CFBundleDisplayName</key>
 	<string>The Old Reader</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.krasnoukhov.theoldreader</string>
+	<string>com.emc2.theoldreader</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4</string>
+	<string>1.6</string>
 	<key>CFBundleVersion</key>
-	<string>5</string>
+	<string>7</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
@@ -43,6 +43,8 @@
 	</dict>
 	<key>Description</key>
 	<string>Notifies you about unread items in your The Old Reader account</string>
+	<key>DeveloperIdentifier</key>
+	<string>7C455S9395</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -56,7 +58,7 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://theoldreader.com/safari/Info.plist</string>
+	<string>https://raw.githubusercontent.com/emc2cube/theoldreader-safari/master/Info.plist</string>
 	<key>Website</key>
 	<string>http://theoldreader.com/</string>
 </dict>

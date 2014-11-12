@@ -9,6 +9,12 @@ var RUNNING = false;
 var refreshTimeout;
 var lastHttpRefresh = 0;
 
+// settings change
+safari.extension.settings.addEventListener("change", function(event) {
+  HTTP_REFRESH_INTERVAL = safari.extension.settings.COUNTER_REFRESH_INTERVAL;
+  SSL = safari.extension.settings.SSL;
+}, false);
+
 // initialize button click event
 safari.application.addEventListener("command", function(params) {
   openOurTab();
@@ -25,20 +31,20 @@ safari.application.addEventListener("validate", function(params) {
 
   if(!RUNNING) {
     RUNNING = true;
-    
+
     findOurTab(function(tab) {
       if(!tab || !refreshTimeout) {
         getCountersFromHTTP();
       }
-    });    
+    });
   }
 }, false);
 
 function findOurTab(callback) {
   if (!safari.application.activeBrowserWindow) {
-    return callback(false);    
+    return callback(false);
   }
-  
+
   var foundTab, windowTabs = safari.application.activeBrowserWindow.tabs;
   for (var i=0; i<windowTabs.length; i++) {
       if (windowTabs[i].url && windowTabs[i].url.match(URLEXP)) {
@@ -52,14 +58,14 @@ function findOurTab(callback) {
 function openOurTab() {
   findOurTab(function(tab) {
     if (tab) {
-      tab.url = (SSL ? 'https://' : 'http://') + safari.extension.settings.LAND_PAGE;
+      tab.url = (SSL ? "https://" : "http://") + safari.extension.settings.LAND_PAGE;
       tab.activate();
     } else {
       if (safari.application.activeBrowserWindow.activeTab.url) {
           var newTab = safari.application.activeBrowserWindow.openTab();
-          newTab.url = (SSL ? 'https://' : 'http://') + safari.extension.settings.LAND_PAGE;
+          newTab.url = (SSL ? "https://" : "http://") + safari.extension.settings.LAND_PAGE;
       } else {
-          safari.application.activeBrowserWindow.activeTab.url = (SSL ? 'https://' : 'http://') + safari.extension.settings.LAND_PAGE;
+          safari.application.activeBrowserWindow.activeTab.url = (SSL ? "https://" : "http://") + safari.extension.settings.LAND_PAGE;
       }
     }
   });
@@ -76,7 +82,7 @@ function reportError() {
 function updateIcon(count) {
   countInt = parseInt(count)
   if (countInt == 0) {
-    count = "" 
+    count = ""
   } else {
     count = countInt.toString()
   }
@@ -85,30 +91,6 @@ function updateIcon(count) {
     buttons[i].badge = count;
     buttons[i].toolTip = "The Old Reader";
   }
-}
-
-function parseCounters(feedData) {
-  var unread_count = 0;
-  
-  if(!feedData.feeds) {
-    return updateIcon(unread_count);
-  }
-  
-  var i, folder;
-  for (i=0; folder=feedData.feeds[i]; i++) {
-    var k, feed;
-    for (k=0; feed=folder.feeds[k]; k++) {
-      if (feed.unread_count) {
-        unread_count += feed.unread_count;
-      }
-    }
-  }
-  for (i=0; folder=feedData.following[i]; i++) {
-    if (folder.unread_count) {
-      unread_count += folder.unread_count;
-    }
-  }
-  updateIcon(unread_count)
 }
 
 function getCounters() {
@@ -148,7 +130,13 @@ function getCountersFromHTTP() {
   // If request succeeds, update counters and reschedule
   function refreshSucceeded(feedData) {
     lastHttpRefresh = Date.now()
-    parseCounters(feedData);
+
+    if (feedData && !isNaN(feedData.max)) {
+      updateIcon(feedData.max);
+    } else {
+      refreshFailed();
+    }
+
     scheduleRefresh();
   }
 
@@ -167,7 +155,7 @@ function getCountersFromHTTP() {
   httpRequest.onreadystatechange = function() {
     if (httpRequest.readyState == 4) {
       if (httpRequest.status >= 400) {
-        console.log('Got HTTP error: ' + httpRequest.status + ' (' + httpRequest.statusText + ')');
+        console.log("Got HTTP error: " + httpRequest.status + " (" + httpRequest.statusText + ")");
         refreshFailed();
       } else if (httpRequest.responseText) {
         window.clearTimeout(requestTimeout);
@@ -176,21 +164,21 @@ function getCountersFromHTTP() {
           feedData = JSON.parse(httpRequest.responseText);
           refreshSucceeded(feedData);
         } catch (exception) {
-          console.log('Exception while parsing json: ' + exception);
+          console.log("Exception while parsing json: " + exception);
           refreshFailed();
         }
       } else {
-        console.log('Got nothing!');
+        console.log("Got nothing!");
         refreshFailed();
       }
     }
   }
 
   try {
-    httpRequest.open('GET', (SSL ? 'https://' : 'http://') + 'theoldreader.com/feeds/counts.json', true);
+    httpRequest.open("GET", (SSL ? "https://" : "http://") + "theoldreader.com/reader/api/0/unread-count?output=json", true);
     httpRequest.send(null);
   } catch (exception) {
-    console.log('Exception while fetching data: ' + exception);
+    console.log("Exception while fetching data: " + exception);
     refreshFailed();
   }
 }
